@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/model/task_data.dart';
 import 'package:todoey_flutter/screens/add_task_screen.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
 
 import 'package:todoey_flutter/model/task.dart';
 
-class TasksScreen extends StatefulWidget {
+class TasksScreen extends StatelessWidget {
   const TasksScreen({Key? key}) : super(key: key);
-
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: "Buy milk"),
-    Task(name: "Buy eggs"),
-    Task(name: "Buy bread"),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +25,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 child: Container(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: AddTaskScreen(
-                    addTaskCallback: (newTaskTitle) {
-                      setState(() {
-                        tasks.add(Task(name:newTaskTitle));
-                        //dismiss the bottom sheet
-                        Navigator.pop(context);
-                      });
-                    },
-                  ),
+                  child: AddTaskScreen(),
                 ),
               );
             },
@@ -79,7 +62,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  "${tasks.length} Tasks",
+                  "${Provider.of<TaskData>(context).tasksCount} Tasks",
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -98,7 +81,6 @@ class _TasksScreenState extends State<TasksScreen> {
                     topRight: Radius.circular(20),
                   )),
               child: TasksList(
-                tasks: tasks,
               ),
             ),
           )
